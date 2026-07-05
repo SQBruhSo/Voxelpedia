@@ -16,7 +16,6 @@
         <!-- BARRA LATERAL IZQUIERDA -->
         <aside class="wiki-sidebar">
             <div class="sidebar-logo-area">
-                <!-- El logo ahora se adapta con un filtro CSS en el diseño visual si usas oscuro -->
                 <img src="VoxelpediaLOGO.png" alt="Voxelpedia Logo" class="wiki-logo">
                 <div class="brand-text">
                     <span class="wiki-title">Voxelpedia</span>
@@ -33,28 +32,56 @@
                     <li><a href="#changelog" class="nav-item" onclick="switchSection('changelog')">Changelog del sitio</a></li>
                 </ul>
             </nav>
+
+            <!-- SISTEMA DE CUENTA ANÓNIMA LOCAL -->
+            <div class="sidebar-auth-box">
+                <div class="nav-section-title">Tu Perfil Anónimo</div>
+                <div id="auth-logged-out">
+                    <p class="auth-desc">Crea un alias local para desbloquear la creación de reseñas. Sin datos personales.</p>
+                    <input type="text" id="username-input" placeholder="Ej: VoxelGamer" maxlength="15">
+                    <button onclick="createLocalAccount()" class="wiki-btn">Crear Perfil</button>
+                </div>
+                <div id="auth-logged-in" style="display: none;">
+                    <p class="auth-welcome">Usuario: <strong id="display-username"></strong></p>
+                    <button onclick="logoutLocalAccount()" class="wiki-btn btn-danger">Salir</button>
+                </div>
+            </div>
         </aside>
 
         <!-- CUERPO CENTRAL -->
         <main class="wiki-main">
             
-            <!-- SECCIÓN: HOME / CRÓNICAS -->
+            <!-- SECCIÓN: HOME / CRÓNICAS Y CREACIÓN DE RESEÑAS -->
             <section id="home" class="wiki-section active">
                 <h1 class="wiki-page-title">Crónicas e Información de Actualidad</h1>
                 <div class="wiki-article-meta">Periodismo independiente de videojuegos. Sin cookies, trackers ni publicidad.</div>
                 
                 <div class="wiki-body-text">
-                    <p>Bienvenido a Voxelpedia. Este espacio nace como una alternativa limpia frente al saturado ecosistema de la prensa de videojuegos actual. Aquí encontrarás redacciones en profundidad, análisis de lanzamientos y cobertura de la industria sin interrupciones visuales de ningún tipo.</p>
+                    <p>Bienvenido a Voxelpedia. Este espacio nace como una alternativa limpia frente al saturado ecosistema de la prensa de videojuegos actual.</p>
                     
-                    <h2>Línea de Redacción</h2>
-                    <p>Nuestro enfoque huye por completo del clickbait y las métricas infladas. Nos centramos exclusivamente en el impacto real de los nuevos lanzamientos, el desarrollo de software y las tendencias globales del sector técnico y creativo.</p>
+                    <!-- PANEL DE CREACIÓN DE RESEÑAS (SÓLO SI ESTÁ LOGUEADO) -->
+                    <div id="review-creation-panel" class="wiki-creator-box" style="display: none;">
+                        <h3>Redactar nueva reseña o artículo</h3>
+                        <p class="wiki-small-text">El contenido se guardará instantáneamente en tu almacenamiento local.</p>
+                        <input type="text" id="review-title" placeholder="Título del juego o artículo...">
+                        <textarea id="review-content" rows="4" placeholder="Escribe tu redacción aquí... Usa *negrita* o _cursiva_ si gustas."></textarea>
+                        <button onclick="saveLocalReview()" class="wiki-btn">Publicar en mi Feed</button>
+                    </div>
+
+                    <!-- FEED DE RESEÑAS LOCALES -->
+                    <div id="local-reviews-container" class="custom-articles-feed">
+                        <!-- Aquí se renderizan las reseñas guardadas por el usuario -->
+                    </div>
+
+                    <h2>Línea de Redacción Principal</h2>
+                    <p>Nuestro enfoque huye por completo del clickbait y las métricas infladas. Nos centramos exclusivamente en el impacto real de los nuevos lanzamientos.</p>
                 </div>
             </section>
 
             <!-- SECCIÓN: UPDATES -->
             <section id="updates" class="wiki-section">
                 <h1 class="wiki-page-title">Updates de Videojuegos</h1>
-                <div class="wiki-article-meta">Notas de desarrollo y análisis de parches en tiempo real.</div>
+                <div class="wiki-article-meta">Notas de desarrollo y análisis de parches con soporte multimedia integrado.</div>
                 
                 <div id="updates-container" class="wiki-body-text">
                     <p class="loading-text">Cargando actualizaciones desde update-voxelpedia.txt...</p>
@@ -68,9 +95,6 @@
                 
                 <div class="wiki-body-text">
                     <h2>Fichas Técnicas Analizadas</h2>
-                    <p>Procesamiento automatizado de los videojuegos destacados de la semana directamente desde nuestros repositorios de redacción planos.</p>
-                    
-                    <!-- Aquí se inyectará el potente sistema de tarjetas de juegos -->
                     <div id="games-container" class="games-system-grid">
                         <p class="loading-text">Detectando juegos de la semana desde games-voxelpedia.txt...</p>
                     </div>
@@ -84,8 +108,6 @@
                 
                 <div class="wiki-body-text">
                     <h2>Integración de Contenido Automatizada</h2>
-                    <p>Los sistemas de datos planos se ejecutan correctamente sin bases de datos del lado del servidor.</p>
-                    
                     <div class="changelog-integration-box">
                         <h3>Vista previa del log integrado (update-voxelpedia.txt):</h3>
                         <div id="changelog-raw-preview"></div>
@@ -100,26 +122,102 @@
 
     </div>
 
-    <!-- LOGICA DEL SITIO: DETECCIÓN DE ARCHIVOS Y MENÚS -->
+    <!-- SCRIPT DE CONTROL TOTAL -->
     <script>
-        // 1. SISTEMA DE ENLACES (Navegación real entre secciones)
+        // NAVEGACIÓN ENTRE PESTAÑAS
         function switchSection(sectionId) {
             document.querySelectorAll('.wiki-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
-
             const target = document.getElementById(sectionId);
             if (target) target.classList.add('active');
-
             const link = document.querySelector(`a[href="#${sectionId}"]`);
             if (link) link.classList.add('active');
-
             window.scrollTo(0, 0);
         }
 
-        // 2. INTÉRPRETE DE TEXTO PERSONALIZADO (update-voxelpedia.txt)
+        // SISTEMA DE CUENTAS ANÓNIMAS LOCALES (LocalStorage)
+        function checkLocalSession() {
+            const user = localStorage.getItem('voxelpedia_user');
+            if (user) {
+                document.getElementById('auth-logged-out').style.display = 'none';
+                document.getElementById('auth-logged-in').style.display = 'block';
+                document.getElementById('display-username').innerText = user;
+                document.getElementById('review-creation-panel').style.display = 'block';
+            } else {
+                document.getElementById('auth-logged-out').style.display = 'block';
+                document.getElementById('auth-logged-in').style.display = 'none';
+                document.getElementById('review-creation-panel').style.display = 'none';
+            }
+            renderLocalReviews();
+        }
+
+        function createLocalAccount() {
+            const username = document.getElementById('username-input').value.trim();
+            if (username) {
+                localStorage.setItem('voxelpedia_user', username);
+                checkLocalSession();
+            }
+        }
+
+        function logoutLocalAccount() {
+            localStorage.removeItem('voxelpedia_user');
+            checkLocalSession();
+        }
+
+        // GUARDAR Y MOSTRAR ARTÍCULOS/RESEÑAS DEL USUARIO
+        function saveLocalReview() {
+            const title = document.getElementById('review-title').value.trim();
+            const content = document.getElementById('review-content').value.trim();
+            const author = localStorage.getItem('voxelpedia_user');
+
+            if (!title || !content) return;
+
+            const reviews = JSON.parse(localStorage.getItem('voxelpedia_reviews') || '[]');
+            reviews.unshift({ title, content, author, date: new Date().toLocaleDateString() });
+            localStorage.setItem('voxelpedia_reviews', JSON.stringify(reviews));
+
+            document.getElementById('review-title').value = '';
+            document.getElementById('review-content').value = '';
+            renderLocalReviews();
+        }
+
+        function renderLocalReviews() {
+            const reviews = JSON.parse(localStorage.getItem('voxelpedia_reviews') || '[]');
+            const container = document.getElementById('local-reviews-container');
+            
+            if (reviews.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '<h2>Tus Reseñas y Artículos Guardados</h2>';
+            reviews.forEach(r => {
+                let formattedContent = r.content.replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/_(.*?)_/g, '<em>$1</em>');
+                html += `
+                    <div class="user-article-card">
+                        <span class="user-article-meta">Por ${r.author} — ${r.date}</span>
+                        <h3>${r.title}</h3>
+                        <p>${formattedContent}</p>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // INTERFACES MULTIMEDIA E INTÉRPRETE DE TEXTO PLANO
+        function toggleImageLink(id) {
+            const linkBox = document.getElementById(id);
+            if (linkBox.style.display === 'none' || !linkBox.style.display) {
+                linkBox.style.display = 'block';
+            } else {
+                linkBox.style.display = 'none';
+            }
+        }
+
         function parseWikiFormat(text) {
             const lines = text.split('\n');
             let htmlOutput = '';
+            let imgCounter = 0;
 
             lines.forEach(line => {
                 let trimmed = line.trim();
@@ -135,24 +233,35 @@
                     htmlOutput += `<p class="wiki-small-text">${trimmed.replace('### ', '')}</p>`;
                 } else if (trimmed.startsWith('TXT<') && trimmed.endsWith('>')) {
                     let content = trimmed.substring(4, trimmed.length - 1);
-                    content = content.replace(/\*(.*?)\*/g, '<strong>$1</strong>');
-                    content = content.replace(/_(.*?)_/g, '<em>$1</em>');
+                    content = content.replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/_(.*?)_/g, '<em>$1</em>');
                     htmlOutput += `<p>${content}</p>`;
+                } else if (trimmed.startsWith('IMG[') && trimmed.endsWith(']')) {
+                    imgCounter++;
+                    let inner = trimmed.substring(4, trimmed.length - 1);
+                    let parts = inner.split('->');
+                    if (parts.length === 2) {
+                        let imgUrl = parts[0].trim();
+                        let sourceUrl = parts[1].trim();
+                        htmlOutput += `
+                            <div class="wiki-image-wrapper">
+                                <img src="${imgUrl}" alt="Imagen de actualización" onclick="toggleImageLink('img-link-${imgCounter}')" class="wiki-render-img">
+                                <div id="img-link-0${imgCounter}" class="wiki-img-source-label" style="display:none;">
+                                    <span>Fuente original: <a href="${sourceUrl}" target="_blank">${sourceUrl}</a></span>
+                                </div>
+                            </div>
+                        `;
+                    }
                 }
             });
-
             return htmlOutput;
         }
 
-        // 3. INTÉRPRETE / DETECTOR DE JUEGOS DE LA SEMANA (games-voxelpedia.txt)
+        // PARSER JUEGOS DE LA SEMANA
         function parseGamesFormat(text) {
             const gameBlocks = text.split('[GAME]');
             let htmlOutput = '';
-
             gameBlocks.forEach(block => {
                 if (!block.trim()) return;
-
-                // Extraer variables mediante expresiones regulares limpias
                 const titleMatch = block.match(/TITLE:\s*(.*)/);
                 const platformsMatch = block.match(/PLATFORMS:\s*(.*)/);
                 const sizeMatch = block.match(/SIZE:\s*(.*)/);
@@ -160,35 +269,27 @@
                 const aboutMatch = block.match(/ABOUT:\s*([\s\S]*)/);
 
                 if (titleMatch) {
-                    const title = titleMatch[1].trim();
-                    const platforms = platformsMatch ? platformsMatch[1].trim() : 'No especificado';
-                    const size = sizeMatch ? sizeMatch[1].trim() : 'Desconocido';
-                    const genre = genreMatch ? genreMatch[1].trim() : 'General';
-                    const about = aboutMatch ? aboutMatch[1].trim() : '';
-
-                    // Generar tarjeta con maquetación limpia estilo Wikipedia moderna
                     htmlOutput += `
                         <div class="game-data-card">
                             <div class="game-card-header">
-                                <span class="game-genre-tag">${genre}</span>
-                                <h3>${title}</h3>
+                                <span class="game-genre-tag">${genreMatch ? genreMatch[1].trim() : 'General'}</span>
+                                <h3>${titleMatch[1].trim()}</h3>
                             </div>
                             <div class="game-card-info-table">
-                                <div class="info-row"><strong>Plataformas:</strong> <span>${platforms}</span></div>
-                                <div class="info-row"><strong>Peso de instalación:</strong> <span>${size}</span></div>
+                                <div class="info-row"><strong>Plataformas:</strong> <span>${platformsMatch ? platformsMatch[1].trim() : 'PC'}</span></div>
+                                <div class="info-row"><strong>Peso:</strong> <span>${sizeMatch ? sizeMatch[1].trim() : 'N/A'}</span></div>
                             </div>
-                            <p class="game-card-about">${about}</p>
+                            <p class="game-card-about">${aboutMatch ? aboutMatch[1].trim() : ''}</p>
                         </div>
                     `;
                 }
             });
-
             return htmlOutput;
         }
 
-        // 4. DETECCIÓN ASÍNCRONA REAL MEDIANTE FETCH
+        // DETECCIÓN ASÍNCRONA REAL
         async function loadExternalData() {
-            // Cargar actualizaciones de la industria
+            checkLocalSession();
             try {
                 const responseUpdates = await fetch('update-voxelpedia.txt');
                 if (responseUpdates.ok) {
@@ -196,28 +297,19 @@
                     const parsed = parseWikiFormat(text);
                     document.getElementById('updates-container').innerHTML = parsed;
                     document.getElementById('changelog-raw-preview').innerHTML = parsed;
-                } else {
-                    throw new Error();
                 }
             } catch (e) {
-                document.getElementById('updates-container').innerHTML = `<p class="error-text">No se pudo detectar el archivo 'update-voxelpedia.txt'. Asegúrate de estar usando un servidor local (Live Server).</p>`;
+                document.getElementById('updates-container').innerHTML = `<p class="error-text">Ejecuta el proyecto usando un entorno de servidor local (Live Server) para leer los archivos .txt.</p>`;
             }
 
-            // Cargar juegos de la semana
             try {
                 const responseGames = await fetch('games-voxelpedia.txt');
                 if (responseGames.ok) {
-                    const text = await responseGames.text();
-                    document.getElementById('games-container').innerHTML = parseGamesFormat(text);
-                } else {
-                    throw new Error();
+                    document.getElementById('games-container').innerHTML = parseGamesFormat(await responseGames.text());
                 }
-            } catch (e) {
-                document.getElementById('games-container').innerHTML = `<p class="error-text">No se pudo detectar el archivo 'games-voxelpedia.txt'. Verifique su ubicación en el directorio raíz.</p>`;
-            }
+            } catch (e) {}
         }
 
-        // Inicializar la carga al abrir el sitio
         window.addEventListener('DOMContentLoaded', loadExternalData);
     </script>
 </body>
