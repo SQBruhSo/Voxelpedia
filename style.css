@@ -1,6 +1,3 @@
-/* ==========================================
-   ESTILO WIKIPEDIA MODERNA & ELEGANTE
-   ========================================== */
 * {
     margin: 0;
     padding: 0;
@@ -11,16 +8,15 @@
     --font-interface: 'Inter', sans-serif;
     --font-article: 'Merriweather', Georgia, serif;
     
-    /* Paleta limpia Wikipedia con acento sutil */
     --bg-page: #ffffff;
     --bg-sidebar: #f8f9fa;
     --text-main: #202122;
     --text-muted: #54595d;
-    --wiki-blue: #2a4b7c; /* Un azul institucional más maduro */
-    --wiki-blue-hover: #3664a2;
+    --wiki-blue: #2a4b7c;
     --border-color: #a2a9b1;
     --border-light: #eaecf0;
     --card-bg: #ffffff;
+    --accent-btn: #2a4b7c;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,10 +26,10 @@
         --text-main: #e3e6eb;
         --text-muted: #9aa0a6;
         --wiki-blue: #70a1ff;
-        --wiki-blue-hover: #1e90ff;
         --border-color: #383f4c;
         --border-light: #222731;
         --card-bg: #1a1e26;
+        --accent-btn: #386dbd;
     }
 }
 
@@ -49,55 +45,39 @@ body {
     min-height: 100vh;
 }
 
-/* SIDEBAR REFINADA */
+/* SIDEBAR */
 .wiki-sidebar {
-    width: 260px;
+    width: 280px;
     background-color: var(--bg-sidebar);
     border-right: 1px solid var(--border-color);
     padding: 2.5rem 1.5rem;
     position: fixed;
     height: 100vh;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .sidebar-logo-area {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
-/* Modificación automática del logo para que siempre se vea bien */
 .wiki-logo {
     width: 44px;
     height: 44px;
     object-fit: contain;
-    transition: filter 0.3s ease;
 }
 @media (prefers-color-scheme: dark) {
-    .wiki-logo {
-        filter: invert(1) brightness(0.9); /* Cambia el color si el sistema está en modo oscuro */
-    }
+    .wiki-logo { filter: invert(1) brightness(0.9); }
 }
 
-.brand-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.wiki-title {
-    font-family: var(--font-article);
-    font-size: 1.3rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
-
-.wiki-subtitle {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+.brand-text { display: flex; flex-direction: column; }
+.wiki-title { font-family: var(--font-article); font-size: 1.3rem; font-weight: 700; }
+.wiki-subtitle { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
 
 .nav-section-title {
     font-size: 0.7rem;
@@ -106,54 +86,24 @@ body {
     color: var(--text-muted);
     border-bottom: 1px solid var(--border-light);
     padding-bottom: 0.4rem;
-    margin-bottom: 1rem;
+    margin: 1.5rem 0 0.8rem 0;
     font-weight: 700;
 }
 
-.sidebar-links {
-    list-style: none;
-}
+.sidebar-links { list-style: none; }
+.nav-item { text-decoration: none; color: var(--wiki-blue); font-size: 0.9rem; display: block; padding: 0.3rem 0; cursor: pointer; }
+.nav-item.active { color: var(--text-main); font-weight: 700; }
 
-.sidebar-links li {
-    margin-bottom: 0.5rem;
-}
-
-.nav-item {
-    text-decoration: none;
-    color: var(--wiki-blue);
-    font-size: 0.9rem;
-    display: block;
-    padding: 0.25rem 0;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.nav-item:hover {
-    text-decoration: underline;
-    color: var(--wiki-blue-hover);
-}
-
-.nav-item.active {
-    color: var(--text-main);
-    font-weight: 700;
-    text-decoration: none;
-}
-
-/* CUERPO CENTRAL DE REDACCIONES */
+/* CUERPO CENTRAL */
 .wiki-main {
-    margin-left: 260px;
+    margin-left: 280px;
     flex: 1;
     padding: 4rem 6rem;
     max-width: 1100px;
 }
 
-.wiki-section {
-    display: none;
-}
-
-.wiki-section.active {
-    display: block;
-}
+.wiki-section { display: none; }
+.wiki-section.active { display: block; }
 
 .wiki-page-title {
     font-family: var(--font-article);
@@ -162,170 +112,114 @@ body {
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.3rem;
     margin-bottom: 0.5rem;
-    letter-spacing: -0.5px;
 }
 
-.wiki-article-meta {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-bottom: 2.5rem;
+.wiki-article-meta { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2.5rem; }
+.wiki-body-text { font-family: var(--font-article); font-size: 1.05rem; line-height: 1.8; }
+.wiki-body-text p { margin-bottom: 1.5rem; }
+.wiki-body-text h2 { font-family: var(--font-article); font-size: 1.6rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.3rem; margin: 3rem 0 1.2rem 0; font-weight: 400;}
+
+/* DISEÑO DE IMÁGENES MULTIMEDIA */
+.wiki-image-wrapper {
+    margin: 2rem 0;
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-light);
+    padding: 0.5rem;
+    border-radius: 6px;
+    display: inline-block;
+    max-width: 100%;
 }
 
-.wiki-body-text {
-    font-family: var(--font-article);
-    font-size: 1.05rem;
-    line-height: 1.8;
-}
-
-.wiki-body-text p {
-    margin-bottom: 1.5rem;
-}
-
-.wiki-body-text h2 {
-    font-family: var(--font-article);
-    font-size: 1.6rem;
-    font-weight: 400;
-    border-bottom: 1px solid var(--border-light);
-    padding-bottom: 0.3rem;
-    margin: 3rem 0 1.2rem 0;
-}
-
-.wiki-body-text h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 2rem 0 0.8rem 0;
-}
-
-/* ==========================================
-   SISTEMA DE TARJETAS DE VIDEOJUEGOS (GAMES)
-   ========================================== */
-.games-system-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.game-data-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1.8rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-}
-
-.game-card-header {
-    margin-bottom: 1.2rem;
-    border-bottom: 1px solid var(--border-light);
-    padding-bottom: 0.8rem;
-}
-
-.game-genre-tag {
-    font-family: var(--font-interface);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    background: rgba(0,0,0,0.05);
-    color: var(--text-muted);
-    padding: 0.2rem 0.5rem;
+.wiki-render-img {
+    max-width: 100%;
+    max-height: 400px;
     border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    transition: opacity 0.2s;
 }
-@media (prefers-color-scheme: dark) {
-    .game-genre-tag { background: rgba(255,255,255,0.08); }
-}
+.wiki-render-img:hover { opacity: 0.9; }
 
-.game-card-header h3 {
+.wiki-img-source-label {
+    margin-top: 0.5rem;
     font-family: var(--font-interface);
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-top: 0.4rem;
-}
-
-.game-card-info-table {
-    font-family: var(--font-interface);
-    font-size: 0.85rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    margin-bottom: 1.2rem;
-    background: var(--bg-sidebar);
-    padding: 0.8rem;
-    border-radius: 6px;
-}
-
-.info-row {
-    display: flex;
-    justify-content: space-between;
-}
-
-.info-row strong {
-    color: var(--text-muted);
-}
-
-.game-card-about {
-    font-size: 0.95rem !important;
-    line-height: 1.6;
-}
-
-/* INTERFAZ DEL PARSER EN UPDATES */
-.update-main-title {
-    color: var(--text-main);
-    border-left: 4px solid var(--wiki-blue);
-    padding-left: 0.8rem;
-    font-size: 1.7rem !important;
-    margin-top: 1.5rem;
-}
-
-.wiki-small-text {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-style: italic;
-    margin-bottom: 1rem;
-}
-
-.changelog-integration-box {
-    margin-top: 2rem;
-    background: var(--bg-sidebar);
-    border: 1px dashed var(--border-color);
-    padding: 1.5rem;
-    border-radius: 6px;
-}
-
-.loading-text {
-    font-size: 0.9rem;
-    font-style: italic;
-    color: var(--text-muted);
-}
-
-.error-text {
-    font-size: 0.9rem;
-    color: #ff4d4d;
-    background: rgba(255,77,77,0.08);
-    padding: 1rem;
-    border-radius: 6px;
-    border: 1px solid rgba(255,77,77,0.2);
-}
-
-.wiki-footer {
-    margin-top: 6rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-light);
     font-size: 0.75rem;
     color: var(--text-muted);
+    border-top: 1px solid var(--border-light);
+    padding-top: 0.4rem;
+}
+.wiki-img-source-label a { color: var(--wiki-blue); text-decoration: none; }
+
+/* PANEL DE DISEÑO DE AUTENTICACIÓN LOCAL Y CREACIÓN */
+.sidebar-auth-box {
+    margin-top: auto;
+    padding-top: 1.5rem;
 }
 
-/* RESPONSIVO */
+.auth-desc { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.6rem; line-height: 1.4; }
+.auth-welcome { font-size: 0.85rem; margin-bottom: 0.6rem; }
+
+.wiki-sidebar input, .wiki-creator-box input, .wiki-creator-box textarea {
+    width: 100%;
+    padding: 0.5rem;
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-page);
+    color: var(--text-main);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.wiki-btn {
+    width: 100%;
+    padding: 0.5rem;
+    background: var(--accent-btn);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.wiki-btn.btn-danger { background: #d9383a; }
+
+.wiki-creator-box {
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+}
+.wiki-creator-box h3 { font-size: 1.1rem; margin-bottom: 0.2rem; font-family: var(--font-interface); }
+
+/* ALIMENTACIÓN DE ARTÍCULOS DE USUARIO */
+.custom-articles-feed { margin: 2rem 0; }
+.user-article-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--wiki-blue);
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+.user-article-meta { font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem; font-family: var(--font-interface); }
+.user-article-card h3 { font-family: var(--font-interface); font-size: 1.25rem; margin-bottom: 0.6rem; }
+
+/* JUEGOS DE LA SEMANA GRID */
+.games-system-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+.game-data-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 1.5rem; }
+.game-card-header h3 { font-family: var(--font-interface); font-size: 1.3rem; margin-top: 0.3rem; }
+.game-genre-tag { font-size: 0.65rem; font-weight: 700; background: rgba(0,0,0,0.05); color: var(--text-muted); padding: 0.15rem 0.4rem; border-radius: 4px; text-transform: uppercase;}
+@media (prefers-color-scheme: dark) { .game-genre-tag { background: rgba(255,255,255,0.08); } }
+.game-card-info-table { font-family: var(--font-interface); font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.3rem; margin: 1rem 0; background: var(--bg-sidebar); padding: 0.6rem; border-radius: 4px; }
+.info-row { display: flex; justify-content: space-between; }
+.game-card-about { font-size: 0.9rem !important; }
+
+.changelog-integration-box { background: var(--bg-sidebar); border: 1px dashed var(--border-color); padding: 1.5rem; border-radius: 6px; margin-top: 1rem; }
+.wiki-footer { margin-top: 6rem; padding-top: 1rem; border-top: 1px solid var(--border-light); font-size: 0.75rem; color: var(--text-muted); }
+
 @media (max-width: 900px) {
-    .wiki-sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        padding: 1.5rem;
-    }
-    .wiki-main {
-        margin-left: 0;
-        padding: 2.5rem 1.5rem;
-    }
+    .wiki-sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border-color); padding: 1.5rem; }
+    .wiki-main { margin-left: 0; padding: 2.5rem 1.5rem; }
 }
