@@ -3,128 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voxelpedia | Prensa y Crónicas de Videojuegos</title>
+    <title>Voxelpedia | La Enciclopedia Libre de Videojuegos</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <!-- BARRA SUPERIOR INSTITUCIONAL (Estilo Wikipedia) -->
+    <header class="wiki-header-top">
+        <div class="header-left">
+            <img src="VoxelpediaLOGO.png" alt="Voxelpedia Logo" class="wiki-logo">
+            <div class="brand-text">
+                <span class="wiki-title">Voxelpedia</span>
+                <span class="wiki-subtitle">La enciclopedia libre de videojuegos</span>
+            </div>
+        </div>
+        
+        <!-- BARRA DE BÚSQUEDA -->
+        <div class="header-search-container">
+            <input type="text" id="wiki-search-bar" placeholder="Buscar en Voxelpedia..." onkeyup="searchArticles()">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <!-- SISTEMA DE CUENTA PROFESIONAL (Login / Registro / Estado) -->
+        <div class="header-auth-area">
+            <div id="auth-status-logged-out">
+                <a href="#" onclick="openAuthModal('login')" class="auth-link">Iniciar sesión</a>
+                <span class="auth-divider">/</span>
+                <a href="#" onclick="openAuthModal('register')" class="auth-link font-bold">Crear una cuenta</a>
+            </div>
+            <div id="auth-status-logged-in" style="display: none;">
+                <span class="user-badge">👤 <span id="header-username"></span></span>
+                <a href="#" onclick="logoutUser()" class="auth-link logout-btn">Salir</a>
+            </div>
+        </div>
+    </header>
+
     <div class="wiki-container">
         
-        <!-- BARRA LATERAL IZQUIERDA -->
+        <!-- BARRA LATERAL DE NAVEGACIÓN -->
         <aside class="wiki-sidebar">
-            <div class="sidebar-logo-area">
-                <img src="VoxelpediaLOGO.png" alt="Voxelpedia Logo" class="wiki-logo">
-                <div class="brand-text">
-                    <span class="wiki-title">Voxelpedia</span>
-                    <span class="wiki-subtitle">Prensa libre de videojuegos</span>
-                </div>
-            </div>
-            
             <nav class="sidebar-nav">
                 <div class="nav-section-title">Navegación</div>
                 <ul class="sidebar-links">
-                    <li><a href="#home" class="nav-item active" onclick="switchSection('home')">Inicio / Crónicas</a></li>
+                    <li><a href="#home" class="nav-item active" onclick="switchSection('home')">Portada / Crónicas</a></li>
                     <li><a href="#updates" class="nav-item" onclick="switchSection('updates')">Updates de la Industria</a></li>
                     <li><a href="#games-of-the-week" class="nav-item" onclick="switchSection('games-of-the-week')">Games of the Week</a></li>
-                    <li><a href="#changelog" class="nav-item" onclick="switchSection('changelog')">Changelog del sitio</a></li>
+                    <li><a href="#changelog" class="nav-item" onclick="switchSection('changelog')">Cambios del sitio</a></li>
                 </ul>
             </nav>
-
-            <!-- SISTEMA DE CUENTA ANÓNIMA LOCAL -->
-            <div class="sidebar-auth-box">
-                <div class="nav-section-title">Tu Perfil Anónimo</div>
-                <div id="auth-logged-out">
-                    <p class="auth-desc">Crea un alias local para desbloquear la creación de reseñas. Sin datos personales.</p>
-                    <input type="text" id="username-input" placeholder="Ej: VoxelGamer" maxlength="15">
-                    <button onclick="createLocalAccount()" class="wiki-btn">Crear Perfil</button>
-                </div>
-                <div id="auth-logged-in" style="display: none;">
-                    <p class="auth-welcome">Usuario: <strong id="display-username"></strong></p>
-                    <button onclick="logoutLocalAccount()" class="wiki-btn btn-danger">Salir</button>
-                </div>
-            </div>
         </aside>
 
-        <!-- CUERPO CENTRAL -->
+        <!-- CUERPO PRINCIPAL DE ARTÍCULOS -->
         <main class="wiki-main">
             
-            <!-- SECCIÓN: HOME / CRÓNICAS Y CREACIÓN DE RESEÑAS -->
+            <!-- SECCIÓN: PORTADA / HOME -->
             <section id="home" class="wiki-section active">
                 <h1 class="wiki-page-title">Crónicas e Información de Actualidad</h1>
-                <div class="wiki-article-meta">Periodismo independiente de videojuegos. Sin cookies, trackers ni publicidad.</div>
+                <div class="wiki-article-meta">De Voxelpedia, la prensa libre e independiente de videojuegos.</div>
                 
                 <div class="wiki-body-text">
-                    <p>Bienvenido a Voxelpedia. Este espacio nace como una alternativa limpia frente al saturado ecosistema de la prensa de videojuegos actual.</p>
+                    <p class="wiki-lead-paragraph">Bienvenido a Voxelpedia. Este espacio nace como una alternativa limpia y estructurada frente al saturado ecosistema de la prensa de videojuegos actual.</p>
                     
-                    <!-- PANEL DE CREACIÓN DE RESEÑAS (SÓLO SI ESTÁ LOGUEADO) -->
-                    <div id="review-creation-panel" class="wiki-creator-box" style="display: none;">
-                        <h3>Redactar nueva reseña o artículo</h3>
-                        <p class="wiki-small-text">El contenido se guardará instantáneamente en tu almacenamiento local.</p>
-                        <input type="text" id="review-title" placeholder="Título del juego o artículo...">
-                        <textarea id="review-content" rows="4" placeholder="Escribe tu redacción aquí... Usa *negrita* o _cursiva_ si gustas."></textarea>
-                        <button onclick="saveLocalReview()" class="wiki-btn">Publicar en mi Feed</button>
+                    <!-- BOTÓN PARA ABRIR EL EDITOR SI ESTÁ LOGUEADO -->
+                    <div id="editor-trigger-container" style="display: none; margin-bottom: 2rem;">
+                        <button onclick="toggleEditor()" class="wiki-action-btn">+ Redactar una nueva reseña o artículo</button>
                     </div>
 
-                    <!-- FEED DE RESEÑAS LOCALES -->
+                    <!-- MODAL/PANEL DE CREACIÓN MINIMALISTA -->
+                    <div id="review-creation-panel" class="wiki-creator-box" style="display: none;">
+                        <div class="creator-box-header">
+                            <h3>Crear Artículo de Opinión o Reseña</h3>
+                            <button onclick="toggleEditor()" class="close-editor-btn">✕ Cerraír</button>
+                        </div>
+                        <input type="text" id="review-title" placeholder="Título del juego o del artículo técnico...">
+                        <textarea id="review-content" rows="6" placeholder="Escribe tu redacción aquí... Puedes usar *negrita* o _cursiva_ para dar formato de texto enriquecido."></textarea>
+                        <div class="creator-box-actions">
+                            <button onclick="saveLocalReview()" class="wiki-submit-btn">Publicar artículo</button>
+                        </div>
+                    </div>
+
+                    <!-- FEED DE RESEÑAS -->
                     <div id="local-reviews-container" class="custom-articles-feed">
-                        <!-- Aquí se renderizan las reseñas guardadas por el usuario -->
+                        <!-- Renderizado dinámico -->
                     </div>
 
                     <h2>Línea de Redacción Principal</h2>
-                    <p>Nuestro enfoque huye por completo del clickbait y las métricas infladas. Nos centramos exclusivamente en el impacto real de los nuevos lanzamientos.</p>
+                    <p>Nuestro enfoque huye por completo del clickbait y las métricas infladas por algoritmos comerciales. Nos centramos exclusivamente en el impacto real de los sistemas de juego, mecánicas, optimización y diseño técnico de las obras interactivas modernas.</p>
                 </div>
             </section>
 
             <!-- SECCIÓN: UPDATES -->
             <section id="updates" class="wiki-section">
                 <h1 class="wiki-page-title">Updates de Videojuegos</h1>
-                <div class="wiki-article-meta">Notas de desarrollo y análisis de parches con soporte multimedia integrado.</div>
-                
+                <div class="wiki-article-meta">Notas analíticas sobre actualizaciones de software de entretenimiento.</div>
                 <div id="updates-container" class="wiki-body-text">
-                    <p class="loading-text">Cargando actualizaciones desde update-voxelpedia.txt...</p>
+                    <p class="loading-text">Cargando datos desde update-voxelpedia.txt...</p>
                 </div>
             </section>
 
             <!-- SECCIÓN: GAMES OF THE WEEK -->
             <section id="games-of-the-week" class="wiki-section">
                 <h1 class="wiki-page-title">Games of the Week</h1>
-                <div class="wiki-article-meta">Detección y desglose técnico de los títulos recomendados de la semana.</div>
-                
-                <div class="wiki-body-text">
-                    <h2>Fichas Técnicas Analizadas</h2>
-                    <div id="games-container" class="games-system-grid">
-                        <p class="loading-text">Detectando juegos de la semana desde games-voxelpedia.txt...</p>
-                    </div>
+                <div class="wiki-article-meta">Fichas analíticas de títulos recomendados semanalmente.</div>
+                <div id="games-container" class="games-system-grid">
+                    <p class="loading-text">Cargando fichas desde games-voxelpedia.txt...</p>
                 </div>
             </section>
 
             <!-- SECCIÓN: CHANGELOG -->
             <section id="changelog" class="wiki-section">
-                <h1 class="wiki-page-title">Changelog del sitio</h1>
-                <div class="wiki-article-meta">Historial técnico y logs del código del sitio.</div>
-                
+                <h1 class="wiki-page-title">Historial de Cambios</h1>
+                <div class="wiki-article-meta">Log técnico del despliegue modular de Voxelpedia.</div>
                 <div class="wiki-body-text">
-                    <h2>Integración de Contenido Automatizada</h2>
                     <div class="changelog-integration-box">
-                        <h3>Vista previa del log integrado (update-voxelpedia.txt):</h3>
+                        <h3>Vista previa del backend en texto plano (update-voxelpedia.txt):</h3>
                         <div id="changelog-raw-preview"></div>
                     </div>
                 </div>
             </section>
 
             <footer class="wiki-footer">
-                Voxelpedia es un proyecto de prensa de código abierto. Todo el contenido está disponible libre de rastreadores.
+                El texto está disponible bajo la Licencia Creative Commons Atribución Compartir Igual; pueden aplicarse cláusulas adicionales.
             </footer>
         </main>
-
     </div>
 
-    <!-- SCRIPT DE CONTROL TOTAL -->
+    <!-- VENTANA MODAL PROFESIONAL DE AUTENTICACIÓN -->
+    <div id="auth-modal" class="wiki-modal-overlay">
+        <div class="wiki-modal-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Iniciar Sesión</h3>
+                <button onclick="closeAuthModal()" class="close-modal-btn">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="auth-username">Nombre de usuario</label>
+                    <input type="text" id="auth-username" placeholder="Introduce tu usuario...">
+                </div>
+                <div class="input-group">
+                    <label for="auth-password">Contraseña</label>
+                    <input type="password" id="auth-password" placeholder="••••••••">
+                </div>
+                <button id="modal-submit-btn" onclick="handleAuthSubmit()" class="wiki-submit-btn">Entrar</button>
+                <p class="modal-switch-text" id="modal-switch-area"></p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // NAVEGACIÓN ENTRE PESTAÑAS
+        let currentAuthMode = 'login';
+
         function switchSection(sectionId) {
             document.querySelectorAll('.wiki-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
@@ -135,40 +166,90 @@
             window.scrollTo(0, 0);
         }
 
-        // SISTEMA DE CUENTAS ANÓNIMAS LOCALES (LocalStorage)
-        function checkLocalSession() {
-            const user = localStorage.getItem('voxelpedia_user');
-            if (user) {
-                document.getElementById('auth-logged-out').style.display = 'none';
-                document.getElementById('auth-logged-in').style.display = 'block';
-                document.getElementById('display-username').innerText = user;
-                document.getElementById('review-creation-panel').style.display = 'block';
+        // CONTROL DE MODAL DE LOGIN/REGISTRO
+        function openAuthModal(mode) {
+            currentAuthMode = mode;
+            const modal = document.getElementById('auth-modal');
+            const title = document.getElementById('modal-title');
+            const btn = document.getElementById('modal-submit-btn');
+            const switchArea = document.getElementById('modal-switch-area');
+            
+            modal.style.display = 'flex';
+            document.getElementById('auth-username').value = '';
+            document.getElementById('auth-password').value = '';
+
+            if (mode === 'login') {
+                title.innerText = 'Iniciar sesión en Voxelpedia';
+                btn.innerText = 'Iniciar sesión';
+                switchArea.innerHTML = '¿No tienes una cuenta? <a href="#" onclick="openAuthModal(\'register\')">Crea una ahora</a>';
             } else {
-                document.getElementById('auth-logged-out').style.display = 'block';
-                document.getElementById('auth-logged-in').style.display = 'none';
+                title.innerText = 'Crear una cuenta';
+                btn.innerText = 'Registrar usuario';
+                switchArea.innerHTML = '¿Ya tienes cuenta? <a href="#" onclick="openAuthModal(\'login\')">Inicia sesión</a>';
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+        }
+
+        // SIMULACIÓN DE SESIÓN (Listo para conectar a Supabase o MongoDB en el futuro)
+        function handleAuthSubmit() {
+            const user = document.getElementById('auth-username').value.trim();
+            const pass = document.getElementById('auth-password').value.trim();
+
+            if (!user || !pass) {
+                alert('Por favor, rellena todos los campos.');
+                return;
+            }
+
+            if (currentAuthMode === 'register') {
+                localStorage.setItem(`user_pwd_${user}`, pass); 
+                alert('Cuenta creada localmente con éxito.');
+            } else {
+                const savedPass = localStorage.getItem(`user_pwd_${user}`);
+                if (savedPass !== pass) {
+                    alert('Usuario o contraseña incorrectos.');
+                    return;
+                }
+            }
+
+            localStorage.setItem('voxelpedia_logged_user', user);
+            closeAuthModal();
+            updateSessionUI();
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('voxelpedia_logged_user');
+            updateSessionUI();
+        }
+
+        function updateSessionUI() {
+            const loggedUser = localStorage.getItem('voxelpedia_logged_user');
+            if (loggedUser) {
+                document.getElementById('auth-status-logged-out').style.display = 'none';
+                document.getElementById('auth-status-logged-in').style.display = 'block';
+                document.getElementById('header-username').innerText = loggedUser;
+                document.getElementById('editor-trigger-container').style.display = 'block';
+            } else {
+                document.getElementById('auth-status-logged-out').style.display = 'block';
+                document.getElementById('auth-status-logged-in').style.display = 'none';
+                document.getElementById('editor-trigger-container').style.display = 'none';
                 document.getElementById('review-creation-panel').style.display = 'none';
             }
             renderLocalReviews();
         }
 
-        function createLocalAccount() {
-            const username = document.getElementById('username-input').value.trim();
-            if (username) {
-                localStorage.setItem('voxelpedia_user', username);
-                checkLocalSession();
-            }
+        function toggleEditor() {
+            const panel = document.getElementById('review-creation-panel');
+            panel.style.display = (panel.style.display === 'none' || !panel.style.display) ? 'block' : 'none';
         }
 
-        function logoutLocalAccount() {
-            localStorage.removeItem('voxelpedia_user');
-            checkLocalSession();
-        }
-
-        // GUARDAR Y MOSTRAR ARTÍCULOS/RESEÑAS DEL USUARIO
+        // GUARDADO DE ARTÍCULOS
         function saveLocalReview() {
             const title = document.getElementById('review-title').value.trim();
             const content = document.getElementById('review-content').value.trim();
-            const author = localStorage.getItem('voxelpedia_user');
+            const author = localStorage.getItem('voxelpedia_logged_user') || 'Anónimo';
 
             if (!title || !content) return;
 
@@ -178,6 +259,7 @@
 
             document.getElementById('review-title').value = '';
             document.getElementById('review-content').value = '';
+            toggleEditor();
             renderLocalReviews();
         }
 
@@ -190,13 +272,13 @@
                 return;
             }
 
-            let html = '<h2>Tus Reseñas y Artículos Guardados</h2>';
+            let html = '<h2>Últimas reseñas de la comunidad</h2>';
             reviews.forEach(r => {
                 let formattedContent = r.content.replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/_(.*?)_/g, '<em>$1</em>');
                 html += `
-                    <div class="user-article-card">
-                        <span class="user-article-meta">Por ${r.author} — ${r.date}</span>
-                        <h3>${r.title}</h3>
+                    <div class="wiki-article-card search-target">
+                        <span class="wiki-card-author">Por ${r.author} — publicado el ${r.date}</span>
+                        <h3 class="search-title">${r.title}</h3>
                         <p>${formattedContent}</p>
                     </div>
                 `;
@@ -204,14 +286,25 @@
             container.innerHTML = html;
         }
 
-        // INTERFACES MULTIMEDIA E INTÉRPRETE DE TEXTO PLANO
+        // MOTOR DE BÚSQUEDA INSTANTÁNEO
+        function searchArticles() {
+            const query = document.getElementById('wiki-search-bar').value.toLowerCase();
+            const targets = document.querySelectorAll('.search-target, .game-data-card');
+
+            targets.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // DETECCIÓN INTERPRETE IMÁGENES ORIGINALES
         function toggleImageLink(id) {
-            const linkBox = document.getElementById(id);
-            if (linkBox.style.display === 'none' || !linkBox.style.display) {
-                linkBox.style.display = 'block';
-            } else {
-                linkBox.style.display = 'none';
-            }
+            const element = document.getElementById(id);
+            element.style.display = (element.style.display === 'none') ? 'block' : 'none';
         }
 
         function parseWikiFormat(text) {
@@ -224,13 +317,11 @@
                 if (!trimmed) return;
 
                 if (trimmed.startsWith('#U ')) {
-                    htmlOutput += `<h2 class="update-main-title">${trimmed.replace('#U ', '')}</h2>`;
+                    htmlOutput += `<h2 class="update-main-title search-title">${trimmed.replace('#U ', '')}</h2>`;
                 } else if (trimmed.startsWith('# ')) {
                     htmlOutput += `<h2>${trimmed.replace('# ', '')}</h2>`;
                 } else if (trimmed.startsWith('## ')) {
                     htmlOutput += `<h3>${trimmed.replace('## ', '')}</h3>`;
-                } else if (trimmed.startsWith('### ')) {
-                    htmlOutput += `<p class="wiki-small-text">${trimmed.replace('### ', '')}</p>`;
                 } else if (trimmed.startsWith('TXT<') && trimmed.endsWith('>')) {
                     let content = trimmed.substring(4, trimmed.length - 1);
                     content = content.replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/_(.*?)_/g, '<em>$1</em>');
@@ -244,9 +335,9 @@
                         let sourceUrl = parts[1].trim();
                         htmlOutput += `
                             <div class="wiki-image-wrapper">
-                                <img src="${imgUrl}" alt="Imagen de actualización" onclick="toggleImageLink('img-link-${imgCounter}')" class="wiki-render-img">
-                                <div id="img-link-0${imgCounter}" class="wiki-img-source-label" style="display:none;">
-                                    <span>Fuente original: <a href="${sourceUrl}" target="_blank">${sourceUrl}</a></span>
+                                <img src="${imgUrl}" alt="Visual" onclick="toggleImageLink('img-src-${imgCounter}')" class="wiki-render-img">
+                                <div id="img-src-${imgCounter}" class="wiki-img-source-label" style="display:none;">
+                                    <span>Enlace de origen: <a href="${sourceUrl}" target="_blank">${sourceUrl}</a></span>
                                 </div>
                             </div>
                         `;
@@ -256,7 +347,6 @@
             return htmlOutput;
         }
 
-        // PARSER JUEGOS DE LA SEMANA
         function parseGamesFormat(text) {
             const gameBlocks = text.split('[GAME]');
             let htmlOutput = '';
@@ -273,7 +363,7 @@
                         <div class="game-data-card">
                             <div class="game-card-header">
                                 <span class="game-genre-tag">${genreMatch ? genreMatch[1].trim() : 'General'}</span>
-                                <h3>${titleMatch[1].trim()}</h3>
+                                <h3 class="search-title">${titleMatch[1].trim()}</h3>
                             </div>
                             <div class="game-card-info-table">
                                 <div class="info-row"><strong>Plataformas:</strong> <span>${platformsMatch ? platformsMatch[1].trim() : 'PC'}</span></div>
@@ -287,30 +377,26 @@
             return htmlOutput;
         }
 
-        // DETECCIÓN ASÍNCRONA REAL
-        async function loadExternalData() {
-            checkLocalSession();
+        async function initData() {
+            updateSessionUI();
             try {
-                const responseUpdates = await fetch('update-voxelpedia.txt');
-                if (responseUpdates.ok) {
-                    const text = await responseUpdates.text();
-                    const parsed = parseWikiFormat(text);
-                    document.getElementById('updates-container').innerHTML = parsed;
-                    document.getElementById('changelog-raw-preview').innerHTML = parsed;
+                const resUpdates = await fetch('update-voxelpedia.txt');
+                if (resUpdates.ok) {
+                    const txt = await resUpdates.text();
+                    document.getElementById('updates-container').innerHTML = parseWikiFormat(txt);
+                    document.getElementById('changelog-raw-preview').innerText = txt;
                 }
-            } catch (e) {
-                document.getElementById('updates-container').innerHTML = `<p class="error-text">Ejecuta el proyecto usando un entorno de servidor local (Live Server) para leer los archivos .txt.</p>`;
-            }
+            } catch(e){}
 
             try {
-                const responseGames = await fetch('games-voxelpedia.txt');
-                if (responseGames.ok) {
-                    document.getElementById('games-container').innerHTML = parseGamesFormat(await responseGames.text());
+                const resGames = await fetch('games-voxelpedia.txt');
+                if (resGames.ok) {
+                    document.getElementById('games-container').innerHTML = parseGamesFormat(await resGames.text());
                 }
-            } catch (e) {}
+            } catch(e){}
         }
 
-        window.addEventListener('DOMContentLoaded', loadExternalData);
+        window.addEventListener('DOMContentLoaded', initData);
     </script>
 </body>
 </html>
