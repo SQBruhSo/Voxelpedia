@@ -7,119 +7,111 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- CABECERA SUPERIOR (Fiel a image_45e32d.jpg) -->
-    <header class="wiki-top-header">
-        <div class="header-left-brand">
-            <img src="VoxelpediaLOGO.png" alt="Voxelpedia Logo" class="wiki-global-logo">
-            <div class="brand-titles">
-                <span class="main-title">Voxelpedia</span>
-                <span class="sub-title">El noticiero libre de franquicias</span>
+    <!-- CABECERA SUPERIOR (Estilo unificado Wikipedia) -->
+    <header class="wiki-header">
+        <div class="header-brand" onclick="switchSection('home')">
+            <div class="brand-logo-placeholder">W</div>
+            <div class="brand-text">
+                <span class="brand-title">Voxelpedia</span>
+                <span class="brand-subtitle">La enciclopedia de noticias libre</span>
             </div>
         </div>
 
-        <!-- BARRA DE BÚSQUEDA INTEGRADA ESTILO WIKIPEDIA -->
-        <div class="header-search-box">
-            <div class="search-input-wrapper">
-                <span class="search-lens">🔍</span>
-                <input type="text" id="wiki-search-input" placeholder="Buscar en Voxelpedia" onkeyup="liveSearch()">
-                <button class="search-action-btn" onclick="liveSearch()">Buscar</button>
+        <!-- BARRA DE BÚSQUEDA CÓMODA e INTEGRADA -->
+        <div class="header-search">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="wiki-search-bar" placeholder="Buscar en Voxelpedia..." onkeyup="liveSearch()">
+                <button class="search-btn" onclick="liveSearch()">Buscar</button>
             </div>
         </div>
 
-        <!-- ENLACES DE USUARIO Y AGREGADO SIN FINES DE LUCRO -->
-        <div class="header-user-navigation">
-            <span class="non-profit-tag">🌐 Proyecto sin fines de lucro</span>
-            <div id="auth-links-container">
-                <a href="#" onclick="openAuthModal('login')" class="user-nav-link">Acceder</a>
-                <a href="#" onclick="openAuthModal('register')" class="user-nav-link">Crear una cuenta</a>
-            </div>
-            <div id="auth-logged-container" style="display: none;">
-                <span class="user-logged-badge">👤 <span id="nav-username"></span></span>
-                <a href="#" onclick="logoutUser()" class="user-nav-link logout-style">Salir</a>
+        <!-- RECONOCIMIENTO PROYECTO -->
+        <div class="header-meta">
+            <span class="badge-nonprofit">🌐 Proyecto sin fines de lucro</span>
+            <div class="auth-group">
+                <a href="#" onclick="openAuth()" id="auth-trigger">Acceder</a>
+                <span id="user-badge" style="display: none;">👤 <span id="username-val"></span> | <a href="#" onclick="logout()" class="logout-link">Salir</a></span>
             </div>
         </div>
     </header>
 
-    <!-- BARRA DE PESTAÑAS Y SUB-MENÚ (Fiel a image_45e32d.jpg) -->
-    <div class="wiki-navigation-tabs">
+    <!-- PESTAÑAS DE NAVEGACIÓN DE CONTENIDO -->
+    <nav class="wiki-tabs-container">
         <div class="tabs-left">
-            <button id="tab-btn-home" class="wiki-tab active" onclick="switchSection('home')">Portada</button>
-            <button id="tab-btn-updates" class="wiki-tab" onclick="switchSection('updates')">Discusión / Noticias</button>
+            <button id="tab-home" class="tab-item active" onclick="switchSection('home')">Portada</button>
+            <button id="tab-news" class="tab-item" onclick="switchSection('news')">Discusión / Noticias</button>
+            <button id="tab-franchises" class="tab-item" onclick="switchSection('franchises')">Franquicias</button>
         </div>
         <div class="tabs-right">
-            <span class="tab-action-text active">Leer</span>
-            <span class="tab-action-text" onclick="switchSection('changelog')">Ver historial</span>
+            <span class="tab-action active">Leer</span>
+            <span class="tab-action" onclick="switchSection('history')">Ver historial</span>
         </div>
-    </div>
+    </nav>
 
-    <!-- CONTENEDOR PRINCIPAL -->
-    <div class="wiki-main-layout">
+    <!-- DISEÑO CENTRAL EN DOS COLUMNAS -->
+    <div class="wiki-layout">
         
-        <!-- PANEL LATERAL MINIMALISTA -->
-        <aside class="wiki-left-navigation">
-            <div class="nav-group-title">Secciones</div>
-            <ul class="nav-group-list">
-                <li><a href="#home" onclick="switchSection('home')" class="sidebar-link-item active-link" id="side-home">Portada principal</a></li>
-                <li><a href="#updates" onclick="switchSection('updates')" class="sidebar-link-item" id="side-updates">Últimas noticias</a></li>
-                <li><a href="#games-of-the-week" onclick="switchSection('games-of-the-week')" class="sidebar-link-item" id="side-games">Análisis de franquicias</a></li>
-                <li><a href="#changelog" onclick="switchSection('changelog')" class="sidebar-link-item" id="side-changelog">Registro técnico</a></li>
-            </ul>
+        <!-- MENÚ LATERAL DE SECCIONES -->
+        <aside class="wiki-sidebar">
+            <div class="sidebar-section">
+                <h4 class="sidebar-title">Navegación</h4>
+                <ul class="sidebar-list">
+                    <li><a href="#home" id="side-home" class="sidebar-link active" onclick="switchSection('home')">Portada principal</a></li>
+                    <li><a href="#news" id="side-news" class="sidebar-link" onclick="switchSection('news')">Últimas noticias</a></li>
+                    <li><a href="#franchises" id="side-franchises" class="sidebar-link" onclick="switchSection('franchises')">Análisis de franquicias</a></li>
+                    <li><a href="#history" id="side-history" class="sidebar-link" onclick="switchSection('history')">Historial del sitio</a></li>
+                </ul>
+            </div>
         </aside>
 
-        <!-- ESPACIO DE CONTENIDO -->
-        <main class="wiki-content-wrapper">
+        <!-- CONTENEDOR DE INFORMACIÓN PRINCIPAL -->
+        <main class="wiki-body">
             
-            <!-- SECCIÓN PORTADA (Estructura de dos columnas basada en image_45e32d.jpg) -->
-            <section id="home" class="wiki-page-section active">
-                <div class="wiki-welcome-banner">
+            <!-- SECCIÓN 1: PORTADA PRINCIPAL -->
+            <section id="sec-home" class="wiki-section active">
+                <div class="welcome-container">
                     <h1>Bienvenidos a Voxelpedia,</h1>
-                    <p>el noticiero e informe enciclopédico de contenido libre sobre franquicias de videojuegos que <span class="highlight-text">todos pueden editar</span>.</p>
+                    <p>el archivo enciclopédico de contenido informativo sobre franquicias de videojuegos. Una cobertura técnica, neutral y de acceso libre que <span class="blue-link">cualquiera puede enriquecer</span>.</p>
                 </div>
 
-                <div class="wiki-portal-grid">
-                    <!-- COLUMNA IZQUIERDA: ARTÍCULO DESTACADO -->
-                    <div class="portal-column-left">
-                        <div class="portal-box">
-                            <div class="portal-box-title">Noticia destacada de la semana</div>
-                            <div class="portal-box-body">
-                                <h2>Evolución de Motores Gráficos en Franquicias Históricas</h2>
-                                <p>El desarrollo contemporáneo de grandes propiedades intelectuales ha forzado una transición masiva hacia arquitecturas modulares. Los entornos técnicos de prueba demuestran que optimizar el renderizado sin comprometer la herencia visual es el mayor desafío de la prensa y preservación actual.</p>
+                <div class="portal-grid">
+                    <!-- BLOQUE DESTACADO (Izquierda) -->
+                    <div class="grid-main-column">
+                        <div class="wiki-card">
+                            <div class="card-header">Artículo destacado de la semana</div>
+                            <div class="card-body font-serif">
+                                <h2>Preservación de Ecosistemas y Motores Gráficos</h2>
+                                <p>El análisis contemporáneo de las grandes franquicias demuestra que el salto hacia entornos modulares define el éxito de las nuevas entregas. Mantener la fidelidad mecánica e identitaria sin saturar el consumo de recursos de red es el balance crítico que define el desarrollo actual.</p>
                                 
-                                <!-- BOTÓN DE REDACCIÓN COMPUNIDAD -->
-                                <div id="editor-trigger-box" style="display: none; margin-top: 1.5rem;">
-                                    <button onclick="toggleEditorPanel()" class="wiki-action-btn">+ Redactar reseña o reporte de franquicia</button>
-                                </div>
-
-                                <!-- FORMULARIO DE EDICIÓN ESTILO WIKIPEDIA -->
-                                <div id="review-creation-panel" class="wiki-editor-container" style="display: none;">
-                                    <div class="editor-header">
-                                        <h3>Editor de Artículo Libre</h3>
-                                        <button onclick="toggleEditorPanel()" class="editor-close">✕</button>
+                                <!-- Zona de Redacción Comunitaria Integrada -->
+                                <div id="editor-zone" style="display: none; margin-top: 1.5rem;">
+                                    <button class="action-btn-outline" onclick="toggleEditor()">+ Crear nuevo informe enciclopédico</button>
+                                    <div id="editor-form" class="editor-panel" style="display: none;">
+                                        <input type="text" id="post-title" placeholder="Título de la franquicia o noticia...">
+                                        <textarea id="post-content" rows="5" placeholder="Escribe tu reporte aquí... Usa *texto* para negritas."></textarea>
+                                        <button class="btn-primary" onclick="publishPost()">Publicar en el repositorio</button>
                                     </div>
-                                    <input type="text" id="review-title" placeholder="Título de la franquicia o noticia...">
-                                    <textarea id="review-content" rows="6" placeholder="Escribe el cuerpo del informe técnico. Usa *negrita* o _cursiva_ para aplicar formato enriquecido..."></textarea>
-                                    <button onclick="saveLocalReview()" class="wiki-save-btn">Publicar entrada</button>
                                 </div>
 
-                                <!-- CONTENEDOR DE ARTÍCULOS DINÁMICOS -->
-                                <div id="local-reviews-container" class="wiki-feed-articles"></div>
+                                <div id="community-feed"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- COLUMNA DERECHA: ACTUALIDAD (Estilo image_45e32d.jpg) -->
-                    <div class="portal-column-right">
-                        <div class="portal-box side-box">
-                            <div class="portal-box-title">Actualidad y Cobertura</div>
-                            <div class="portal-box-body">
-                                <ul class="wiki-bullet-list">
-                                    <li><strong>Franquicias:</strong> Monitoreo de cambios de balance en parches competitivos.</li>
-                                    <li><strong>Lanzamientos:</strong> Análisis técnico de ports y estabilidad de servidores.</li>
-                                    <li><strong>Preservación:</strong> Documentación libre de software antiguo y emulación legal.</li>
+                    <!-- BLOQUE DE ACTUALIDAD (Derecha) -->
+                    <div class="grid-side-column">
+                        <div class="wiki-card standard-box">
+                            <div class="card-header">Actualidad Informativa</div>
+                            <div class="card-body">
+                                <ul class="bullet-list">
+                                    <li><strong>Franquicias:</strong> Monitoreo de parches técnicos y balances competitivos globales.</li>
+                                    <li><strong>Infraestructura:</strong> Estado de servidores y arquitectura de red en lanzamientos masivos.</li>
+                                    <li><strong>Archivo:</strong> Documentación libre y catalogación técnica de software clásico.</li>
                                 </ul>
                             </div>
                         </div>
@@ -127,199 +119,146 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN: NOTICIAS (UPDATES) -->
-            <section id="updates" class="wiki-page-section">
-                <h1 class="page-heading">Últimas Noticias de la Industria</h1>
-                <div class="page-subheading">Notas analíticas sobre actualizaciones de software de entretenimiento interactivo.</div>
-                <div id="updates-container" class="wiki-article-body">
-                    <p class="wiki-loading">Procesando archivo update-voxelpedia.txt...</p>
+            <!-- SECCIÓN 2: NOTICIAS (NOTICIERO) -->
+            <section id="sec-news" class="wiki-section">
+                <h2 class="section-title">Últimas Noticias de la Industria</h2>
+                <p class="section-subtitle">Dossiers y cables de prensa analizados por la comunidad.</p>
+                <div id="news-stream" class="stream-container">
+                    <p class="status-msg">Cargando registros desde update-voxelpedia.txt...</p>
                 </div>
             </section>
 
-            <!-- SECCIÓN: ANÁLISIS DE FRANQUICIAS -->
-            <section id="games-of-the-week" class="wiki-page-section">
-                <h1 class="page-heading">Análisis de Franquicias y Juegos de la Semana</h1>
-                <div class="page-subheading">Fichas técnicas y desglose del código y mecánicas recomendadas.</div>
-                <div id="games-container" class="games-wiki-layout-grid">
-                    <p class="wiki-loading">Procesando archivo games-voxelpedia.txt...</p>
+            <!-- SECCIÓN 3: FRANQUICIAS -->
+            <section id="sec-franchises" class="wiki-section">
+                <h2 class="section-title">Análisis de Franquicias Históricas</h2>
+                <p class="section-subtitle">Hojas de datos técnicos de sistemas y títulos evaluados.</p>
+                <div id="franchises-stream" class="franchises-grid">
+                    <p class="status-msg">Cargando especificaciones desde games-voxelpedia.txt...</p>
                 </div>
             </section>
 
-            <!-- SECCIÓN: CHANGELOG -->
-            <section id="changelog" class="wiki-page-section">
-                <h1 class="page-heading">Historial Técnico del Sitio</h1>
-                <div class="page-subheading">Logs del sistema y lectura directa del repositorio de texto.</div>
-                <div class="wiki-article-body">
-                    <div class="raw-log-container">
-                        <h3>Archivo plano integrado (update-voxelpedia.txt):</h3>
-                        <div id="changelog-raw-preview"></div>
-                    </div>
+            <!-- SECCIÓN 4: HISTORIAL -->
+            <section id="sec-history" class="wiki-section">
+                <h2 class="section-title">Historial y Archivos Crudos</h2>
+                <p class="section-subtitle">Visualización directa de los repositorios planos del sistema.</p>
+                <div class="raw-log-box">
+                    <pre id="raw-log-output">Cargando flujo de datos plano original...</pre>
                 </div>
             </section>
 
-            <!-- FOOTER INFORMAL INSPIRADO EN CC -->
-            <footer class="wiki-bottom-footer">
-                Voxelpedia es un repositorio y portal de noticias e información sobre videojuegos gestionado por una comunidad libre. Contenido disponible bajo los términos de la documentación abierta y sin fines de lucro.
-            </footer>
         </main>
     </div>
 
-    <!-- MODAL DE LOGIN/REGISTRO PROFESIONAL -->
-    <div id="auth-modal" class="wiki-overlay-modal">
-        <div class="wiki-modal-box-card">
-            <div class="modal-card-header">
-                <h3 id="modal-title-text">Iniciar sesión</h3>
-                <button onclick="closeAuthModal()" class="modal-dismiss-btn">✕</button>
+    <!-- MODAL DE ACCESO LIMPIO -->
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Acceso Comunitario</h3>
+                <button onclick="closeAuth()" class="close-btn">✕</button>
             </div>
-            <div class="modal-card-body">
-                <div class="wiki-form-group">
-                    <label for="auth-username">Nombre de usuario</label>
-                    <input type="text" id="auth-username" placeholder="Introduce tu alias corporativo o de comunidad">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nombre de usuario</label>
+                    <input type="text" id="in-user" placeholder="Ej. Colaborador_Voxel">
                 </div>
-                <div class="wiki-form-group">
-                    <label for="auth-password">Contraseña</label>
-                    <input type="password" id="auth-password" placeholder="••••••••">
+                <div class="form-group">
+                    <label>Clave de acceso</label>
+                    <input type="password" id="in-pass" placeholder="••••••••">
                 </div>
-                <button id="modal-submit-action" onclick="processAuthSubmit()" class="wiki-save-btn width-100">Entrar</button>
-                <p class="modal-footer-switch" id="modal-toggle-text"></p>
+                <button class="btn-primary full-width" onclick="submitAuth()">Ingresar al sistema</button>
             </div>
         </div>
     </div>
 
+    <!-- COMPORTAMIENTO LÓGICO -->
     <script>
-        let currentAuthMode = 'login';
+        // CONMUTADOR DE SECCIONES CÓMODO Y LIMPIO
+        function switchSection(target) {
+            document.querySelectorAll('.wiki-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
 
-        function switchSection(sectionId) {
-            document.querySelectorAll('.wiki-page-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.sidebar-link-item').forEach(l => l.classList.remove('active-link'));
-            document.querySelectorAll('.wiki-tab').forEach(t => t.classList.remove('active'));
-            
-            const targetSection = document.getElementById(sectionId);
-            if (targetSection) targetSection.classList.add('active');
-            
-            const targetSidebar = document.querySelector(`a[href="#${sectionId}"]`);
-            if (targetSidebar) targetSidebar.classList.add('active-link');
+            const section = document.getElementById(`sec-${target}`);
+            if (section) section.classList.add('active');
 
-            if(sectionId === 'home') document.getElementById('tab-btn-home').classList.add('active');
-            if(sectionId === 'updates') document.getElementById('tab-btn-updates').classList.add('active');
+            const sidebarLink = document.getElementById(`side-${target}`);
+            if (sidebarLink) sidebarLink.classList.add('active');
+
+            const tab = document.getElementById(`tab-${target}`);
+            if (tab) tab.classList.add('active');
 
             window.scrollTo(0, 0);
         }
 
-        // CONTROL DE REGISTRO E INICIO DE SESIÓN
-        function openAuthModal(mode) {
-            currentAuthMode = mode;
-            const modal = document.getElementById('auth-modal');
-            const title = document.getElementById('modal-title-text');
-            const btn = document.getElementById('modal-submit-action');
-            const toggleText = document.getElementById('modal-toggle-text');
+        // CONTROL DE SESIÓN LOCAL PROFESIONAL
+        function openAuth() { document.getElementById('auth-modal').style.display = 'flex'; }
+        document.getElementById('auth-modal').addEventListener('click', (e) => { if(e.target.id === 'auth-modal') closeAuth(); });
+        function closeAuth() { document.getElementById('auth-modal').style.display = 'none'; }
 
-            modal.style.display = 'flex';
-            document.getElementById('auth-username').value = '';
-            document.getElementById('auth-password').value = '';
+        function submitAuth() {
+            const u = document.getElementById('in-user').value.trim();
+            const p = document.getElementById('in-pass').value.trim();
+            if(!u || !p) return;
+            localStorage.setItem('vox_session', u);
+            closeAuth();
+            checkSession();
+        }
 
-            if(mode === 'login') {
-                title.innerText = 'Iniciar sesión en Voxelpedia';
-                btn.innerText = 'Iniciar sesión';
-                toggleText.innerHTML = '¿No tienes una cuenta aún? <a href="#" onclick="openAuthModal(\'register\')">Crea una cuenta comunitaria</a>';
+        function logout() {
+            localStorage.removeItem('vox_session');
+            checkSession();
+        }
+
+        function checkSession() {
+            const user = localStorage.getItem('vox_session');
+            if(user) {
+                document.getElementById('auth-trigger').style.display = 'none';
+                document.getElementById('user-badge').style.display = 'inline';
+                document.getElementById('username-val').innerText = user;
+                document.getElementById('editor-zone').style.display = 'block';
             } else {
-                title.innerText = 'Crear una cuenta en Voxelpedia';
-                btn.innerText = 'Registrar nueva cuenta';
-                toggleText.innerHTML = '¿Ya eres miembro? <a href="#" onclick="openAuthModal(\'login\')">Accede aquí</a>';
+                document.getElementById('auth-trigger').style.display = 'inline';
+                document.getElementById('user-badge').style.display = 'none';
+                document.getElementById('editor-zone').style.display = 'none';
+                document.getElementById('editor-form').style.display = 'none';
             }
+            renderLocalPosts();
         }
 
-        function closeAuthModal() {
-            document.getElementById('auth-modal').style.display = 'none';
+        // MANEJO DE PUBLICACIONES DE LA COMUNIDAD
+        function toggleEditor() {
+            const f = document.getElementById('editor-form');
+            f.style.display = f.style.display === 'none' ? 'block' : 'none';
         }
 
-        function processAuthSubmit() {
-            const user = document.getElementById('auth-username').value.trim();
-            const pass = document.getElementById('auth-password').value.trim();
+        function publishPost() {
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            const user = localStorage.getItem('vox_session') || 'Anónimo';
+            if(!title || !content) return;
 
-            if (!user || !pass) {
-                alert('Por favor complete los campos requeridos.');
-                return;
-            }
+            const posts = JSON.parse(localStorage.getItem('vox_posts') || '[]');
+            posts.unshift({ title, content, user, date: new Date().toLocaleDateString() });
+            localStorage.setItem('vox_posts', JSON.stringify(posts));
 
-            if (currentAuthMode === 'register') {
-                localStorage.setItem(`vox_pwd_${user}`, pass);
-                alert('Registro local guardado con éxito. Ahora puede iniciar sesión.');
-                openAuthModal('login');
-                return;
-            } else {
-                const checkPass = localStorage.getItem(`vox_pwd_${user}`);
-                if (checkPass !== pass) {
-                    alert('Credenciales no válidas en el entorno local.');
-                    return;
-                }
-            }
-
-            localStorage.setItem('voxelpedia_user_session', user);
-            closeAuthModal();
-            syncSessionState();
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            toggleEditor();
+            renderLocalPosts();
         }
 
-        function logoutUser() {
-            localStorage.removeItem('voxelpedia_user_session');
-            syncSessionState();
-        }
+        function renderLocalPosts() {
+            const posts = JSON.parse(localStorage.getItem('vox_posts') || '[]');
+            const container = document.getElementById('community-feed');
+            if(posts.length === 0) { container.innerHTML = ''; return; }
 
-        function syncSessionState() {
-            const activeUser = localStorage.getItem('voxelpedia_user_session');
-            if (activeUser) {
-                document.getElementById('auth-links-container').style.display = 'none';
-                document.getElementById('auth-logged-container').style.display = 'block';
-                document.getElementById('nav-username').innerText = activeUser;
-                document.getElementById('editor-trigger-box').style.display = 'block';
-            } else {
-                document.getElementById('auth-links-container').style.display = 'block';
-                document.getElementById('auth-logged-container').style.display = 'none';
-                document.getElementById('editor-trigger-box').style.display = 'none';
-                document.getElementById('review-creation-panel').style.display = 'none';
-            }
-            renderLocalReviews();
-        }
-
-        function toggleEditorPanel() {
-            const panel = document.getElementById('review-creation-panel');
-            panel.style.display = (panel.style.display === 'none' || !panel.style.display) ? 'block' : 'none';
-        }
-
-        // MOTOR DE ARTÍCULOS LOCALES
-        function saveLocalReview() {
-            const title = document.getElementById('review-title').value.trim();
-            const content = document.getElementById('review-content').value.trim();
-            const author = localStorage.getItem('voxelpedia_user_session') || 'Colaborador';
-
-            if (!title || !content) return;
-
-            const articles = JSON.parse(localStorage.getItem('vox_local_articles') || '[]');
-            articles.unshift({ title, content, author, date: new Date().toLocaleDateString() });
-            localStorage.setItem('vox_local_articles', JSON.stringify(articles));
-
-            document.getElementById('review-title').value = '';
-            document.getElementById('review-content').value = '';
-            toggleEditorPanel();
-            renderLocalReviews();
-        }
-
-        function renderLocalReviews() {
-            const articles = JSON.parse(localStorage.getItem('vox_local_articles') || '[]');
-            const container = document.getElementById('local-reviews-container');
-            
-            if (articles.length === 0) {
-                container.innerHTML = '';
-                return;
-            }
-
-            let html = '<h3 style="margin-top:2rem; border-bottom:1px solid var(--border-wiki); padding-bottom:0.3rem;">Aportes recientes de la comunidad</h3>';
-            articles.forEach(art => {
-                let formatted = art.content.replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/_(.*?)_/g, '<em>$1</em>');
+            let html = `<h3 class="community-section-title">Aportes de editores locales</h3>`;
+            posts.forEach(p => {
+                let formatted = p.content.replace(/\*(.*?)\*/g, '<strong>$1</strong>');
                 html += `
-                    <div class="wiki-render-card search-target">
-                        <span class="card-meta-info">Dossier por ${art.author} — Modificado el ${art.date}</span>
-                        <h4 class="search-title">${art.title}</h4>
+                    <div class="community-node search-target">
+                        <span class="node-meta">Publicado por ${p.user} — ${p.date}</span>
+                        <h4 class="node-title">${p.title}</h4>
                         <p>${formatted}</p>
                     </div>
                 `;
@@ -327,117 +266,100 @@
             container.innerHTML = html;
         }
 
-        // BARRA DE BÚSQUEDA INTEGRAL (Filtra todo el contenido renderizado)
+        // MOTOR DE BÚSQUEDA INTEGRAL INTELIGENTE
         function liveSearch() {
-            const query = document.getElementById('wiki-search-input').value.toLowerCase();
-            const targets = document.querySelectorAll('.search-target, .game-card-node, .wiki-render-card');
+            const query = document.getElementById('wiki-search-bar').value.toLowerCase();
+            const elements = document.querySelectorAll('.search-target, .community-node, .game-node-box');
 
-            targets.forEach(element => {
-                const contentText = element.textContent.toLowerCase();
-                if (contentText.includes(query)) {
-                    element.style.display = '';
+            elements.forEach(el => {
+                if (el.textContent.toLowerCase().includes(query)) {
+                    el.style.display = '';
                 } else {
-                    element.style.display = 'none';
+                    el.style.display = 'none';
                 }
             });
         }
 
-        // PARSER E INTÉRPRETE TEXTO PLANO (.TXT)
-        function toggleImageLinkBox(id) {
-            const box = document.getElementById(id);
-            box.style.display = (box.style.display === 'none') ? 'block' : 'none';
-        }
-
-        function parseWikiFormat(text) {
+        // PARSER E INTÉRPRETE DE TEXTO PLANO (.TXT)
+        function parseTxtWiki(text) {
             const lines = text.split('\n');
-            let htmlOutput = '';
-            let imageIndex = 0;
-
+            let output = '';
             lines.forEach(line => {
-                let trimmed = line.trim();
-                if (!trimmed) return;
+                let clean = line.trim();
+                if (!clean) return;
 
-                if (trimmed.startsWith('#U ')) {
-                    htmlOutput += `<h2 class="search-title font-wiki-style" style="margin-top:2rem; border-bottom:1px solid var(--border-wiki); font-weight:400;">${trimmed.replace('#U ', '')}</h2>`;
-                } else if (trimmed.startsWith('# ')) {
-                    htmlOutput += `<h2 class="font-wiki-style" style="font-weight:400; border-bottom:1px solid var(--border-light); padding-bottom:0.2rem;">${trimmed.replace('# ', '')}</h2>`;
-                } else if (trimmed.startsWith('## ')) {
-                    htmlOutput += `<h3 class="font-wiki-style" style="font-weight:400; margin-top:1.5rem;">${trimmed.replace('## ', '')}</h3>`;
-                } else if (trimmed.startsWith('TXT<') && trimmed.endsWith('>')) {
-                    let content = trimmed.substring(4, trimmed.length - 1);
-                    content = content.replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/_(.*?)_/g, '<em>$1</em>');
-                    htmlOutput += `<p class="search-target" style="margin-bottom:1rem; line-height:1.75;">${content}</p>`;
-                } else if (trimmed.startsWith('IMG[') && trimmed.endsWith(']')) {
-                    imageIndex++;
-                    let inner = trimmed.substring(4, trimmed.length - 1);
-                    let parts = inner.split('->');
-                    if (parts.length === 2) {
-                        let imgUrl = parts[0].trim();
-                        let originUrl = parts[1].trim();
-                        htmlOutput += `
-                            <div class="wiki-embedded-image-box">
-                                <img src="${imgUrl}" alt="Media" onclick="toggleImageLinkBox('src-box-${imageIndex}')" class="clickable-wiki-img">
-                                <div id="src-box-${imageIndex}" class="image-origin-caption" style="display:none;">
-                                    <span>Fuente original externa: <a href="${originUrl}" target="_blank">${originUrl}</a></span>
-                                </div>
-                            </div>
-                        `;
+                if (clean.startsWith('#U ')) {
+                    output += `<h3 class="search-title txt-h3 search-target">${clean.replace('#U ', '')}</h3>`;
+                } else if (clean.startsWith('# ')) {
+                    output += `<h2 class="txt-h2 search-target">${clean.replace('# ', '')}</h2>`;
+                } else if (clean.startsWith('## ')) {
+                    output += `<h4 class="txt-h4 search-target">${clean.replace('## ', '')}</h4>`;
+                } else if (clean.startsWith('TXT<') && clean.endsWith('>')) {
+                    let textBody = clean.substring(4, clean.length - 1);
+                    textBody = textBody.replace(/\*(.*?)\*/g, '<strong>$1</strong>');
+                    output += `<p class="txt-p search-target">${textBody}</p>`;
+                } else if (clean.startsWith('IMG[') && clean.endsWith(']')) {
+                    let content = clean.substring(4, clean.length - 1).split('->');
+                    if (content.length === 2) {
+                        output += `
+                            <div class="wiki-img-wrapper">
+                                <img src="${content[0].trim()}" class="wiki-img">
+                                <span class="img-caption">Origen de datos: <a href="${content[1].trim()}" target="_blank">Enlace externo</a></span>
+                            </div>`;
                     }
                 }
             });
-            return htmlOutput;
+            return output;
         }
 
-        function parseGamesFormat(text) {
+        function parseTxtGames(text) {
             const blocks = text.split('[GAME]');
-            let htmlOutput = '';
-            blocks.forEach(block => {
-                if (!block.trim()) return;
-                const t = block.match(/TITLE:\s*(.*)/);
-                const p = block.match(/PLATFORMS:\s*(.*)/);
-                const s = block.match(/SIZE:\s*(.*)/);
-                const g = block.match(/GENRE:\s*(.*)/);
-                const a = block.match(/ABOUT:\s*([\s\S]*)/);
+            let output = '';
+            blocks.forEach(b => {
+                if(!b.trim()) return;
+                const t = b.match(/TITLE:\s*(.*)/);
+                const p = b.match(/PLATFORMS:\s*(.*)/);
+                const s = b.match(/SIZE:\s*(.*)/);
+                const g = b.match(/GENRE:\s*(.*)/);
+                const a = b.match(/ABOUT:\s*([\s\S]*)/);
 
                 if (t) {
-                    htmlOutput += `
-                        <div class="game-card-node">
+                    output += `
+                        <div class="game-node-box search-target">
                             <div class="game-node-header">
-                                <span class="game-node-tag">${g ? g[1].trim() : 'Noticia'}</span>
-                                <h3 class="search-title">${t[1].trim()}</h3>
+                                <span class="game-tag">${g ? g[1].trim() : 'Ficha'}</span>
+                                <h3>${t[1].trim()}</h3>
                             </div>
-                            <div class="game-node-meta-table">
-                                <div class="meta-row"><span>Ecosistema:</span> <strong>${p ? p[1].trim() : 'Multiplataforma'}</strong></div>
-                                <div class="meta-row"><span>Volumen:</span> <strong>${s ? s[1].trim() : 'N/A'}</strong></div>
+                            <div class="game-meta-table">
+                                <div><span>Plataformas:</span> <strong>${p ? p[1].trim() : 'N/A'}</strong></div>
+                                <div><span>Almacenamiento:</span> <strong>${s ? s[1].trim() : 'N/A'}</strong></div>
                             </div>
                             <p>${a ? a[1].trim() : ''}</p>
-                        </div>
-                    `;
+                        </div>`;
                 }
             });
-            return htmlOutput;
+            return output;
         }
 
-        async function loadWikiSystem() {
-            syncSessionState();
+        // ENTRADA DEL SISTEMA
+        window.addEventListener('DOMContentLoaded', async () => {
+            checkSession();
             try {
-                const res = await fetch('update-voxelpedia.txt');
-                if (res.ok) {
-                    const contentText = await res.text();
-                    document.getElementById('updates-container').innerHTML = parseWikiFormat(contentText);
-                    document.getElementById('changelog-raw-preview').innerText = contentText;
+                const r1 = await fetch('update-voxelpedia.txt');
+                if (r1.ok) {
+                    const txt = await r1.text();
+                    document.getElementById('news-stream').innerHTML = parseTxtWiki(txt);
+                    document.getElementById('raw-log-output').innerText = txt;
                 }
-            } catch(e){}
+            } catch(e) {}
 
             try {
-                const resG = await fetch('games-voxelpedia.txt');
-                if (resG.ok) {
-                    document.getElementById('games-container').innerHTML = parseGamesFormat(await resG.text());
+                const r2 = await fetch('games-voxelpedia.txt');
+                if (r2.ok) {
+                    document.getElementById('franchises-stream').innerHTML = parseTxtGames(await r2.text());
                 }
-            } catch(e){}
-        }
-
-        window.addEventListener('DOMContentLoaded', loadWikiSystem);
+            } catch(e) {}
+        });
     </script>
 </body>
 </html>
