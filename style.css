@@ -1,0 +1,331 @@
+/* ==========================================
+   ESTILO WIKIPEDIA MODERNA & ELEGANTE
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --font-interface: 'Inter', sans-serif;
+    --font-article: 'Merriweather', Georgia, serif;
+    
+    /* Paleta limpia Wikipedia con acento sutil */
+    --bg-page: #ffffff;
+    --bg-sidebar: #f8f9fa;
+    --text-main: #202122;
+    --text-muted: #54595d;
+    --wiki-blue: #2a4b7c; /* Un azul institucional más maduro */
+    --wiki-blue-hover: #3664a2;
+    --border-color: #a2a9b1;
+    --border-light: #eaecf0;
+    --card-bg: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-page: #0f1115;
+        --bg-sidebar: #161920;
+        --text-main: #e3e6eb;
+        --text-muted: #9aa0a6;
+        --wiki-blue: #70a1ff;
+        --wiki-blue-hover: #1e90ff;
+        --border-color: #383f4c;
+        --border-light: #222731;
+        --card-bg: #1a1e26;
+    }
+}
+
+body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: var(--font-interface);
+    -webkit-font-smoothing: antialiased;
+}
+
+.wiki-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR REFINADA */
+.wiki-sidebar {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    padding: 2.5rem 1.5rem;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-logo-area {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 3rem;
+}
+
+/* Modificación automática del logo para que siempre se vea bien */
+.wiki-logo {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    transition: filter 0.3s ease;
+}
+@media (prefers-color-scheme: dark) {
+    .wiki-logo {
+        filter: invert(1) brightness(0.9); /* Cambia el color si el sistema está en modo oscuro */
+    }
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.wiki-title {
+    font-family: var(--font-article);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.wiki-subtitle {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nav-section-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.sidebar-links {
+    list-style: none;
+}
+
+.sidebar-links li {
+    margin-bottom: 0.5rem;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--wiki-blue);
+    font-size: 0.9rem;
+    display: block;
+    padding: 0.25rem 0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.nav-item:hover {
+    text-decoration: underline;
+    color: var(--wiki-blue-hover);
+}
+
+.nav-item.active {
+    color: var(--text-main);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* CUERPO CENTRAL DE REDACCIONES */
+.wiki-main {
+    margin-left: 260px;
+    flex: 1;
+    padding: 4rem 6rem;
+    max-width: 1100px;
+}
+
+.wiki-section {
+    display: none;
+}
+
+.wiki-section.active {
+    display: block;
+}
+
+.wiki-page-title {
+    font-family: var(--font-article);
+    font-size: 2.3rem;
+    font-weight: 400;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.wiki-article-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+}
+
+.wiki-body-text {
+    font-family: var(--font-article);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.wiki-body-text p {
+    margin-bottom: 1.5rem;
+}
+
+.wiki-body-text h2 {
+    font-family: var(--font-article);
+    font-size: 1.6rem;
+    font-weight: 400;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 0.3rem;
+    margin: 3rem 0 1.2rem 0;
+}
+
+.wiki-body-text h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 2rem 0 0.8rem 0;
+}
+
+/* ==========================================
+   SISTEMA DE TARJETAS DE VIDEOJUEGOS (GAMES)
+   ========================================== */
+.games-system-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.game-data-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.8rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.game-card-header {
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 0.8rem;
+}
+
+.game-genre-tag {
+    font-family: var(--font-interface);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: rgba(0,0,0,0.05);
+    color: var(--text-muted);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+@media (prefers-color-scheme: dark) {
+    .game-genre-tag { background: rgba(255,255,255,0.08); }
+}
+
+.game-card-header h3 {
+    font-family: var(--font-interface);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 0.4rem;
+}
+
+.game-card-info-table {
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+    background: var(--bg-sidebar);
+    padding: 0.8rem;
+    border-radius: 6px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-row strong {
+    color: var(--text-muted);
+}
+
+.game-card-about {
+    font-size: 0.95rem !important;
+    line-height: 1.6;
+}
+
+/* INTERFAZ DEL PARSER EN UPDATES */
+.update-main-title {
+    color: var(--text-main);
+    border-left: 4px solid var(--wiki-blue);
+    padding-left: 0.8rem;
+    font-size: 1.7rem !important;
+    margin-top: 1.5rem;
+}
+
+.wiki-small-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.changelog-integration-box {
+    margin-top: 2rem;
+    background: var(--bg-sidebar);
+    border: 1px dashed var(--border-color);
+    padding: 1.5rem;
+    border-radius: 6px;
+}
+
+.loading-text {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+.error-text {
+    font-size: 0.9rem;
+    color: #ff4d4d;
+    background: rgba(255,77,77,0.08);
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255,77,77,0.2);
+}
+
+.wiki-footer {
+    margin-top: 6rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-light);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+    .wiki-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.5rem;
+    }
+    .wiki-main {
+        margin-left: 0;
+        padding: 2.5rem 1.5rem;
+    }
+}

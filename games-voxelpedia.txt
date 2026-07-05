@@ -1,0 +1,13 @@
+[GAME]
+TITLE: Hollow Knight
+PLATFORMS: PC, Nintendo Switch, PS4, Xbox One
+SIZE: 9 GB
+GENRE: Metroidvania, Acción
+ABOUT: Explora un vasto reino en ruinas de insectos y héroes en una aventura clásica dibujada a mano. Descubre cavernas serpenteantes y lucha contra criaturas corrompidas.
+
+[GAME]
+TITLE: Outer Wilds
+PLATFORMS: PC, Xbox Series X/S, PS5, Switch
+SIZE: 8 GB
+GENRE: Exploración, Misterio, Ciencia Ficción
+ABOUT: Un juego de misterio sobre un sistema solar confinado en un bucle temporal infinito. Investiga los restos de una civilización alienígena extinta para detener el fin del mundo.
